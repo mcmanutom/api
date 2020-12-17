@@ -1,0 +1,15 @@
+#install.packages("jsonlite, httr")
+#install.packages("httpuv")
+library(jsonlite)
+library(httr)
+library(httpuv)
+oauth_endpoints("github")
+
+x = oauth_app(appname = "mcmanus_tom", key = "c029fe9909c264561f0a", secret = "2a11e9ca27d7154b40cac4e5de6cda247ad2a849")
+gtoken = oauth2.0_token(oauth_endpoints("github"), x)
+gtoken = config(token = github_token)
+req = GET("https://api.github.com/users/jtleek/repos", gtoken)
+stop_for_status(req)
+json1 = content(req)
+gitDF = jsonlite::fromJSON(jsonlite::toJSON(json1))
+gitDF[gitDF$full_name == "jtleek/datasharing", "created_at"]
